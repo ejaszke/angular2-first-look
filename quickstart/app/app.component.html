@@ -1,3 +1,9 @@
 <h1>{{title}}</h1><h2>{{hero.name}} is king!</h2>
 
 <input [(ngModel)]="hero.name" placeholder="name">
+
+<ul class="heroes">
+    <li *ngFor="#hero of heroes">
+        <span class="badge">{{hero.id}}</span> {{hero.name}}
+    </li>
+</ul>
