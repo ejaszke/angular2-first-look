@@ -1,9 +1,12 @@
-<h1>{{title}}</h1><h2>{{hero.name}} is king!</h2>
+<h1>{{title}}</h1>
 
-<input [(ngModel)]="hero.name" placeholder="name">
+<my-hero-detail [hero]="selectedHero"></my-hero-detail>
 
 <ul class="heroes">
-    <li *ngFor="#hero of heroes">
+    <li
+            *ngFor="#hero of heroes"
+            [class.selected]="hero === selectedHero"
+            (click)="onSelect(hero)">
         <span class="badge">{{hero.id}}</span> {{hero.name}}
     </li>
 </ul>
