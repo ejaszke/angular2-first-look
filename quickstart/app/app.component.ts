@@ -1,33 +1,50 @@
-import {Component} from 'angular2/core';
-import {Hero} from './hero';
-import {HeroDetailComponent} from './hero-detail.component';
-import {HeroService} from './hero.service';
-import {OnInit} from 'angular2/core';
+import { Component }       from 'angular2/core';
+import { HeroService }     from './hero.service';
+import { HeroesComponent } from './heroes.component';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
+import { DashboardComponent } from './dashboard.component';
+import { HeroDetailComponent } from './hero-detail.component';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'app/app.component.html',
-    styleUrls: ['app/app.component.css'],
-    directives: [HeroDetailComponent],
-    providers: [HeroService]
+    template: `
+    <h1>{{title}}</h1>
+    <my-heroes></my-heroes>
+    <nav>
+    <a [routerLink]="['Dashboard']">Dashboard</a>
+    <a [routerLink]="['Heroes']">Heroes</a>
+    </nav>
+    <router-outlet></router-outlet>
+  `,
+    styleUrls: [
+        'app/app.component.css'
+    ],
+    directives: [ROUTER_DIRECTIVES],
+    providers: [
+        ROUTER_PROVIDERS,
+        HeroService
+    ]
 })
 
-export class AppComponent implements OnInit{
-    title = 'Sample Title';
-    heroes: Hero[];
-    selectedHero: Hero;
-
-    constructor(private _heroService: HeroService) { }
-
-    ngOnInit() {
-        this.getHeroes();
+@RouteConfig([
+    {
+        path: '/heroes',
+        name: 'Heroes',
+        component: HeroesComponent
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: DashboardComponent,
+        useAsDefault: true
+    },
+    {
+        path: '/detail/:id',
+        name: 'HeroDetail',
+        component: HeroDetailComponent
     }
+])
 
-    onSelect(hero: Hero) {
-        this.selectedHero = hero;
-    }
-
-    getHeroes() {
-        this._heroService.getHeroes().then(heroes => this.heroes = heroes);
-    }
+export class AppComponent {
+    title = 'Tour of Heroes';
 }
